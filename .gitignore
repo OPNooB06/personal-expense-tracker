@@ -1,0 +1,10 @@
+# Editor and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and secrets (never upload these)
+*.log
+.env
+node_modules/

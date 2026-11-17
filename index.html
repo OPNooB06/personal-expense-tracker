@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+
+    <!-- Summary box (Student 2 fills this using summary.js) -->
+    <section class="card">
+      <h2>Summary</h2>
+      <p>Total spent: <strong id="totalAmount">₹0</strong></p>
+      <ul id="categoryTotals"></ul>
+      <label>Budget limit (₹):
+        <input type="number" id="budgetInput" min="0" placeholder="e.g. 5000">
+      </label>
+      <p id="budgetMessage"></p>
+    </section>
+
+    <!-- Add form (Student 1 fills this using app.js) -->
+    <section class="card">
+      <h2>Add Expense</h2>
+      <form id="expenseForm">
+        <input type="text" id="titleInput" placeholder="What did you spend on?" required>
+        <input type="number" id="amountInput" placeholder="Amount (₹)" min="1" required>
+        <select id="categoryInput">
+          <option>Food</option>
+          <option>Travel</option>
+          <option>Shopping</option>
+          <option>Bills</option>
+          <option>Other</option>
+        </select>
+        <input type="date" id="dateInput" required>
+        <button type="submit">Add Expense</button>
+      </form>
+    </section>
+
+    <!-- Expense list and category filter -->
+    <section class="card">
+      <h2>My Expenses</h2>
+      <label>Show:
+        <select id="filterCategory">
+          <option>All</option>
+          <option>Food</option>
+          <option>Travel</option>
+          <option>Shopping</option>
+          <option>Bills</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <ul id="expenseList"></ul>
+    </section>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="summary.js"></script>
+  <script src="filter.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
