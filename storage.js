@@ -1,8 +1,36 @@
-// storage.js - keeps the list of expenses
-// Student 1 will replace this with browser saving (localStorage) later.
+// storage.js - keeps the list of expenses and saves it in the browser.
 
-let expenses = [
-  { id: 1, title: "Lunch", amount: 120, category: "Food", date: "2026-11-01" },
-  { id: 2, title: "Bus ticket", amount: 40, category: "Travel", date: "2026-11-02" },
-  { id: 3, title: "Notebook", amount: 80, category: "Shopping", date: "2026-11-03" }
-];
+let expenses = [];
+
+try {
+    const savedExpenses = JSON.parse(localStorage.getItem("expenses"));
+    expenses = Array.isArray(savedExpenses) ? savedExpenses : [];
+} catch (error) {
+    // If stored data is damaged, start with an empty list instead of crashing.
+    expenses = [];
+}
+
+function saveExpenses() {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+}
+
+function addExpense(title, amount, category, date) {
+    const expense = {
+        id: Date.now(),
+        title: title.trim(),
+        amount: Number(amount),
+        category: category,
+        date: date
+    };
+
+    expenses.push(expense);
+    saveExpenses();
+}
+
+function deleteExpense(id) {
+    expenses = expenses.filter(function (expense) {
+        return expense.id !== id;
+    });
+
+    saveExpenses();
+}
