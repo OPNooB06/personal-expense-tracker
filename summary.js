@@ -1,6 +1,7 @@
-// summary.js - total, category-wise totals and budget warning
-// Student 2 will write this part.
-
-function showSummary() {
-  // empty for now
+// summary.js - total, category-wise totals and budget warning 
+function showSummary() { 
+  // 1. Total spending 
+  let total = 0; 
+  for (const e of expenses) { total += e.amount; } 
+  document.getElementById("totalAmount").textContent = "₹" + total; 
 }
