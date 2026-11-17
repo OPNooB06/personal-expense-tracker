@@ -7,3 +7,16 @@ let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 function saveExpenses() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
 }
+
+// Add one new expense to the list
+function addExpense(title, amount, category, date) {
+  const expense = {
+    id: Date.now(),
+    title: title,
+    amount: Number(amount),
+    category: category,
+    date: date
+  };
+  expenses.push(expense);
+  saveExpenses();
+}
