@@ -6,17 +6,21 @@ try {
     const savedExpenses = JSON.parse(localStorage.getItem("expenses"));
     expenses = Array.isArray(savedExpenses) ? savedExpenses : [];
 } catch (error) {
-    // If stored data is damaged, start with an empty list instead of crashing.
+    // If stored data is damaged or unavailable, start with an empty list.
     expenses = [];
 }
 
 function saveExpenses() {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
+    try {
+        localStorage.setItem("expenses", JSON.stringify(expenses));
+    } catch (error) {
+        // Ignore storage quota or sandbox restrictions.
+    }
 }
 
 function addExpense(title, amount, category, date) {
     const expense = {
-        id: Date.now(),
+        id: Date.now() + Math.floor(Math.random() * 1000),
         title: title.trim(),
         amount: Number(amount),
         category: category,
