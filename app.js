@@ -24,4 +24,20 @@ function refreshPage() {
   showSummary();
 }
 
+// When the form is submitted, add the expense
+document.getElementById("expenseForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  addExpense(
+    document.getElementById("titleInput").value,
+    document.getElementById("amountInput").value,
+    document.getElementById("categoryInput").value,
+    document.getElementById("dateInput").value
+  );
+
+  this.reset();
+  refreshPage();
+});
+
+
 refreshPage();
