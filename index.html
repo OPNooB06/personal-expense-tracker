@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,54 +7,236 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+
   <div class="container">
-    <h1>Expense Tracker</h1>
+    <!-- Top App Navigation Bar -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/>
+            <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="eyebrow-badge">Personal Finance Workspace</div>
+          <h1>Expense Tracker</h1>
+        </div>
+      </div>
 
-    <!-- Summary box (Student 2 fills this using summary.js) -->
-    <section class="card">
-      <h2>Summary</h2>
-      <p>Total spent: <strong id="totalAmount">₹0</strong></p>
-      <ul id="categoryTotals"></ul>
-      <label>Budget limit (₹):
-        <input type="number" id="budgetInput" min="0" placeholder="e.g. 5000">
-      </label>
-      <p id="budgetMessage"></p>
-    </section>
+      <div class="header-actions">
+        <span id="currentDateBadge" class="date-pill" aria-label="Current date"></span>
+        <button type="button" id="sampleDataBtn" class="ghost-btn" title="Load sample expenses">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
+          </svg>
+          <span>Demo Data</span>
+        </button>
+        <button type="button" id="exportCsvBtn" class="ghost-btn" title="Export expenses to CSV">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Export CSV</span>
+        </button>
+        <button type="button" id="themeToggleBtn" class="icon-btn" aria-label="Toggle color theme" title="Toggle Dark / Light Mode">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+          <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-    <!-- Add form (Student 1 fills this using app.js) -->
-    <section class="card">
-      <h2>Add Expense</h2>
-      <form id="expenseForm">
-        <input type="text" id="titleInput" placeholder="What did you spend on?" required>
-        <input type="number" id="amountInput" placeholder="Amount (₹)" min="1" required>
-        <select id="categoryInput">
-          <option>Food</option>
-          <option>Travel</option>
-          <option>Shopping</option>
-          <option>Bills</option>
-          <option>Other</option>
-        </select>
-        <input type="date" id="dateInput" required>
-        <button type="submit">Add Expense</button>
-      </form>
-    </section>
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+      <!-- Top / Left Column: Summary & Analytics + Add Expense -->
+      <div class="primary-column">
+        <!-- Summary box (Student 2 fills this using summary.js) -->
+        <section class="card summary-card">
+          <div class="card-header">
+            <div>
+              <span class="section-kicker">Overview &amp; Budget</span>
+              <h2>Summary</h2>
+            </div>
+            <span id="budgetStatusBadge" class="status-pill">No budget set</span>
+          </div>
 
-    <!-- Expense list and category filter -->
-    <section class="card">
-      <h2>My Expenses</h2>
-      <label>Show:
-        <select id="filterCategory">
-          <option>All</option>
-          <option>Food</option>
-          <option>Travel</option>
-          <option>Shopping</option>
-          <option>Bills</option>
-          <option>Other</option>
-        </select>
-      </label>
-      <ul id="expenseList"></ul>
-    </section>
+          <div class="summary-hero-grid">
+            <div class="total-spent-box">
+              <p class="total-label">Total spent: <strong id="totalAmount">₹0</strong></p>
+              <p class="total-subtext" id="summarySubtext">Track your spending across categories in real time.</p>
+            </div>
+
+            <div class="mini-kpi-grid">
+              <div class="mini-kpi">
+                <span class="mini-kpi-label">Transactions</span>
+                <strong class="mini-kpi-value" id="statCount">0</strong>
+              </div>
+              <div class="mini-kpi">
+                <span class="mini-kpi-label">Avg. Expense</span>
+                <strong class="mini-kpi-value" id="statAvg">₹0</strong>
+              </div>
+              <div class="mini-kpi">
+                <span class="mini-kpi-label">Top Category</span>
+                <strong class="mini-kpi-value" id="statTopCategory">—</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual distribution bar -->
+          <div class="distribution-wrapper" id="distributionWrapper">
+            <div class="distribution-header">
+              <span class="distribution-title">Category Share</span>
+              <span class="distribution-caption" id="distributionCaption">Add expenses to view breakdown</span>
+            </div>
+            <div class="distribution-bar" id="distributionBar" role="img" aria-label="Category spending distribution"></div>
+          </div>
+
+          <!-- Student 2's category list -->
+          <ul id="categoryTotals"></ul>
+
+          <!-- Budget Controls & Progress -->
+          <div class="budget-control-panel">
+            <div class="budget-input-row">
+              <label for="budgetInput">Budget limit (₹):
+                <input type="number" id="budgetInput" min="0" placeholder="e.g. 5000">
+              </label>
+              <div class="budget-meter-meta">
+                <span id="budgetUsagePercent">0% used</span>
+              </div>
+            </div>
+            <div class="budget-progress-track" aria-hidden="true">
+              <div class="budget-progress-fill" id="budgetProgressFill"></div>
+            </div>
+            <p id="budgetMessage"></p>
+          </div>
+        </section>
+
+        <!-- Add form (Student 1 fills this using app.js) -->
+        <section class="card form-card">
+          <div class="card-header">
+            <div>
+              <span class="section-kicker">New Entry</span>
+              <h2>Add Expense</h2>
+            </div>
+            <div class="quick-amounts" aria-label="Quick amount presets">
+              <button type="button" class="chip-btn" data-add-amount="100">+₹100</button>
+              <button type="button" class="chip-btn" data-add-amount="250">+₹250</button>
+              <button type="button" class="chip-btn" data-add-amount="500">+₹500</button>
+              <button type="button" class="chip-btn" data-add-amount="1000">+₹1,000</button>
+            </div>
+          </div>
+
+          <form id="expenseForm">
+            <div class="field-group field-title">
+              <label for="titleInput">Expense Title</label>
+              <div class="input-with-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                </svg>
+                <input type="text" id="titleInput" placeholder="What did you spend on?" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="amountInput">Amount (₹)</label>
+              <div class="input-with-icon">
+                <span class="currency-prefix">₹</span>
+                <input type="number" id="amountInput" placeholder="Amount (₹)" min="1" step="any" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="categoryInput">Category</label>
+              <select id="categoryInput">
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Shopping</option>
+                <option>Bills</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="dateInput">Date</label>
+              <input type="date" id="dateInput" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>Add Expense</span>
+            </button>
+          </form>
+        </section>
+      </div>
+
+      <!-- Right / Bottom Column: Expense list and category filter -->
+      <section class="card transactions-card">
+        <div class="card-header transactions-header">
+          <div>
+            <span class="section-kicker">Activity Ledger</span>
+            <h2>My Expenses</h2>
+          </div>
+          <div class="transactions-count-Group">
+            <span id="shownCountBadge" class="count-badge">0 items</span>
+            <button type="button" id="clearAllBtn" class="text-danger-btn" hidden>Clear All</button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="ledger-toolbar">
+          <div class="search-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="search" id="searchInput" placeholder="Search by title or category..." aria-label="Search expenses">
+          </div>
+
+          <div class="toolbar-selects">
+            <label class="filter-label">Show:
+              <select id="filterCategory">
+                <option>All</option>
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Shopping</option>
+                <option>Bills</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label class="sort-label" for="sortSelect">Sort:
+              <select id="sortSelect" aria-label="Sort expenses">
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="highest">Highest amount</option>
+                <option value="lowest">Lowest amount</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Interactive Category Pills (synced with #filterCategory) -->
+        <div class="category-pills" id="categoryPills" role="tablist" aria-label="Quick category filter">
+          <button type="button" class="pill-tab active" data-category="All">All</button>
+          <button type="button" class="pill-tab" data-category="Food">Food</button>
+          <button type="button" class="pill-tab" data-category="Travel">Travel</button>
+          <button type="button" class="pill-tab" data-category="Shopping">Shopping</button>
+          <button type="button" class="pill-tab" data-category="Bills">Bills</button>
+          <button type="button" class="pill-tab" data-category="Other">Other</button>
+        </div>
+
+        <ul id="expenseList"></ul>
+      </section>
+    </main>
   </div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
   <script src="storage.js"></script>
   <script src="summary.js"></script>
