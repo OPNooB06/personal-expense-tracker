@@ -20,3 +20,12 @@ function addExpense(title, amount, category, date) {
   expenses.push(expense);
   saveExpenses();
 }
+
+
+// Remove the expense with the given id
+function deleteExpense(id) {
+  expenses = expenses.filter(function (e) {
+    return e.id !== id;
+  });
+  saveExpenses();
+}
